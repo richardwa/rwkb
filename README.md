@@ -16,5 +16,6 @@ adjust Makefile to your hardware
 
 # Installing the Example
 make
+
 make flash (this uses avrdude, ensure your the device and MCU is right for you)
 
