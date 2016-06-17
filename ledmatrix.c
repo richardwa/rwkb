@@ -1,8 +1,9 @@
-#include "ledmatrix.h"
-#include "cpp-utility.h"
-#include "ledmatrix-config.c"
+#include <avr/io.h>
 #include <util/atomic.h>
 #include <string.h>
+#include "ledmatrix.h"
+#include "cpp-utility.h"
+#include "config.h"
 
 //period of 7 can be described with 3 bits
 #define LED_MAT_PERIOD 7
@@ -37,9 +38,6 @@ void ledMatrixInit(){
 #undef lambda 
 #undef nested 
     }
-
-    //set state for layer 0
-    ledMatrixLayerChangeHook(1UL);
 }
 
 //buffer for holding physical color of each key
