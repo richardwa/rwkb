@@ -8,7 +8,6 @@ MCU   = atmega32u4
 F_CPU = 16000000UL  
 BAUD  = 9600UL
 PORT  = /dev/ttyACM*
-LIBDIR = ../lib
 
 
 ##########------------------------------------------------------##########
@@ -69,12 +68,12 @@ TARGET = main
 # Object files: will find all .c/.h files in current directory
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
-SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
+SOURCES=$(wildcard *.c)
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious.
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. 
 CFLAGS = -Os -g -std=gnu99 -Wall -save-temps
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
@@ -88,6 +87,8 @@ LDFLAGS += -Wl,--gc-sections
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
 TARGET_ARCH = -mmcu=$(MCU)
+
+all: cpp-utility.h $(TARGET).hex 
 
 cpp-utility.h: cpp-utility.pl
 	./cpp-utility.pl > cpp-utility.h
@@ -112,11 +113,10 @@ $(TARGET).elf: $(OBJECTS)
 ## These targets don't have files named after them
 .PHONY: all disassemble disasm eeprom size clean squeaky_clean flash fuses
 
-all: $(TARGET).hex 
-
 
 debug:
 	@echo
+	@echo "HEADERS" $(HEADERS)
 	@echo "Source files:"   $(SOURCES)
 	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
 	@echo	
@@ -136,7 +136,7 @@ size:  $(TARGET).elf
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
 	*.o $(TARGET).d $(TARGET).eep $(TARGET).lst \
-	*.i *.s \
+	*.i *.s cpp-utility.h \
 	$(TARGET).lss $(TARGET).sym $(TARGET).map $(TARGET)~ \
 	$(TARGET).eeprom
 
