@@ -5,17 +5,26 @@
 
 #define led 7
 
-int count = 0;
 int main(void)
 {
     
     ledMatrixInit();
-    initInterval(100);
+    initInterval(1000);
     DDRC |= (1 << led);
+
+    ledMatrixSetState((uint8_t[]){
+        0xFF,0x0F,0xFF,
+        0xF0,0xFF,0xF0,
+        0xFF,0x0F,0xFF
+    });
+
+    uint8_t toggle = 0xFF;
 
     while (1) {
         PORTC ^= (1 << led);
-        _delay_ms(500);
+        ledMatrixSetKeyState(1,1,toggle);
+        toggle = ~toggle;
+        _delay_ms(1000);
     }
 }
 
