@@ -3,18 +3,6 @@
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
-
-MCU   = atmega32u4
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-PORT  = /dev/ttyACM*
-LIBDIR = ../lib
-
-
-##########------------------------------------------------------##########
-##########              Project-specific Details                ##########
-##########    Check these every time you start a new project    ##########
-##########------------------------------------------------------##########
 #sample settings
 #MCU   = atmega32u4
 #F_CPU = 16000000UL  
@@ -63,8 +51,7 @@ AVRDUDE = avrdude
 ## The name of your project (without the .c)
 # TARGET = blinkLED
 ## Or name it automatically after the enclosing directory
-#TARGET = $(lastword $(subst /, ,$(CURDIR)))
-TARGET = main
+TARGET = $(lastword $(subst /, ,$(CURDIR)))
 
 # Object files: will find all .c/.h files in current directory
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
@@ -89,12 +76,9 @@ LDFLAGS += -Wl,--gc-sections
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
 TARGET_ARCH = -mmcu=$(MCU)
 
-cpp-utility.h: cpp-utility.pl
-	./cpp-utility.pl > cpp-utility.h
-
 ## Explicit pattern rules:
 ##  To make .o files from .c files 
-%.o: %.c $(HEADERS) Makefile 
+%.o: %.c $(HEADERS) Makefile
 	 $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -o $@ $<;
 
 $(TARGET).elf: $(OBJECTS)
@@ -113,7 +97,6 @@ $(TARGET).elf: $(OBJECTS)
 .PHONY: all disassemble disasm eeprom size clean squeaky_clean flash fuses
 
 all: $(TARGET).hex 
-
 
 debug:
 	@echo
