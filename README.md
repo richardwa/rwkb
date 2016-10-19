@@ -3,7 +3,8 @@ C (avr-gcc) library to control 2 pin bi colored ledmatrix
 
 bi colored leds with 2 pins are pretty cool.  Fewer connections than a traditional 3 lead LED, the savings really add up when your keyboard has 50 LEDs.  They work by having one color in one direction and different color when the current is flipped.  I did not find any libraries out there that would drive a matrix of these bad boys, so here it is.
 
-Personally, I made this to include into my planck/tmk firmware keyboard to have individually controllable backlight.  Check the wiki for pics.
+Personally, I made this to include into my planck/tmk firmware keyboard to have individually controllable backlight. See my
+[Keyboard build](https://github.com/richardwa/ledmatrix/wiki).
 
 ## Dependencies
 avr-gcc stack
