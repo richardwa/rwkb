@@ -1,5 +1,5 @@
 # Keyboard with 2 color Programmable LEDs
-![keyboard](https://raw.githubusercontent.com/richardwa/ledmatrix/main/pics/keyboard.jpg)
+![keyboard](/pics/keyboard.jpg?raw=true)
 
 Years ago I had built my own keyboard made from 2 numpads, my goal being to have a mechanical keyboard with a grid layout. It worked fine and was my main home keyboard (though i do most my typing at work) for a long time. Then I stumbled upon Jack Humbert's Ortholinear keyboards - so i wasn't the only one after all :D I ordered a top plate and a milled bottom from Jack, and got started as soon as it arrived (which took a while).
 
@@ -10,7 +10,7 @@ For my second build, I had salvaged teensy++ from the numpad keyboard - needed m
 I used 2 pin bi color leds and laid it out in a matrix. The idea is to power the matrix 1 row at a time, flip the current to show the second color, then move on the next row (of course this is done really fast so it looks like it is all lit and I am able to use get different shades of the 2 colors). The build and coding took some time, maybe 2 weeks each - working on it a few hours each day, and I finally finished it. Posted my led driver on github if anyone is interested.
 
 # Wiring
-![wiring](https://raw.githubusercontent.com/richardwa/ledmatrix/main/pics/wiring.jpg)
+![wiring](/pics/wiring.jpg?raw=true)
 
 # LED test rig
-![ledmatrix](https://raw.githubusercontent.com/richardwa/ledmatrix/main/pics/ledmatrix.jpg)
+![ledmatrix](/pics/ledmatrix.jpg?raw=true)
