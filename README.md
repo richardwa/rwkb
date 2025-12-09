@@ -1,5 +1,5 @@
 # My layout
-![img.png](img.png)
+![img.png](/pics/img.png)
 
 # My Keyboards
 ![2012 goldtouch](/pics/image13.jpg?raw=true)
