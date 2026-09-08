@@ -45,6 +45,11 @@ fi
 
 mkdir -p "$CACHE_DIR" "$OUT_DIR"
 
+# --- log everything to build/build.log (fresh on each run) -------------------
+LOG_FILE="$BUILD_DIR/build.log"
+exec > >(tee "$LOG_FILE") 2>&1
+echo "Logging to $LOG_FILE"
+
 # --- container image (cached) ------------------------------------------------
 if ! podman image exists "$QMK_IMAGE"; then
     echo "==> Pulling $QMK_IMAGE"
@@ -61,7 +66,7 @@ else
     git clone --depth 1 --recurse-submodules --shallow-submodules "$QMK_REPO" "$FW_DIR"
 fi
 
-# --- podman invocation -------------------------------------------------------
+# --- podman invocation (local helper) -------------------------------------------------------
 # Rootless podman maps container root to the host user, so files written to
 # the mounts are owned by us. QMK_HOME points qmk at the cached source tree.
 qmk() {
@@ -76,12 +81,18 @@ qmk() {
 
 # --- build -------------------------------------------------------------------
 FAILED=()
+# shellcheck disable=SC2124
 for keymap_json in "${KEYMAPS[@]}"; do
     name="$(basename "$keymap_json" .json)"
     keyboard="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["keyboard"])' "$keymap_json")"
     keymap="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["keymap"])' "$keymap_json")"
 
     echo "==> Building $name ($keyboard:$keymap)"
+
+    # Marker for detecting freshly produced firmware artifacts
+    stamp="$CACHE_DIR/.stamp"
+    touch "$stamp"
+    sleep 1
 
     # qmk copies the keymap into the source tree; remove any stale copy first
     if ! qmk "rm -rf /qmk_firmware/keyboards/$keyboard/keymaps/$keymap && qmk compile '$keymap_json'"; then
@@ -90,14 +101,13 @@ for keymap_json in "${KEYMAPS[@]}"; do
         continue
     fi
 
-    # The artifact lands in the repo root (or firmware root depending on qmk
-    # version); move whatever was produced into build/output.
+    # The artifact lands in the QMK source folder named <kb>_<keymap>.<ext>
+    # (exact name varies between qmk versions), so pick up whatever firmware
+    # file appeared since the marker was touched and move it to build/output.
     artifact=""
     for ext in bin hex uf2; do
-        for dir in . "$FW_DIR"; do
-            cand="$dir/$keymap.$ext"
-            [[ -f "$cand" ]] && artifact="$cand" && break 2
-        done
+        cand="$(find . "$FW_DIR" -maxdepth 1 -name "*.$ext" -newer "$stamp" -printf '%T@ %p\n' 2>/dev/null | sort -rn | head -1 | cut -d' ' -f2-)"
+        [[ -n "$cand" ]] && artifact="$cand" && break
     done
 
     if [[ -n "$artifact" ]]; then
