@@ -1,4 +1,5 @@
 .history
 .idea
 *.log
-build/cache
+zmk/build/cache
+qmk/build/cache
