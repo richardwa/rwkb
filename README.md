@@ -10,5 +10,7 @@
 
 ![2021 planck](/pics/planck-2021.jpg?raw=true)
 
-# use online configurator
-https://config.qmk.fm
+2024 inland 47 (for the kids)
+
+2026 lily58
+
