@@ -73,7 +73,7 @@
                                                                              &mo L_SYM 
                                                                              &mt RALT LEFT 
                                                                              &mt RGUI DOWN 
-                                                                             &mt END UP
+                                                                             &kp UP
                                                                              &mt RCTRL RIGHT
     &none &none &none &none &none &none &none &none
             >;
