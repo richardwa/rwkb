@@ -46,7 +46,7 @@
             bindings = <&kp>, <&kp>;
             display-name = "Mod-Tap";
             quick-tap-ms = <200>;
-            hold-while-undecided;
+            // hold-while-undecided;
         };
         lt: layer_tap {
             compatible = "zmk,behavior-hold-tap";
